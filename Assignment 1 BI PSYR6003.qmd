@@ -1,0 +1,123 @@
+---
+title: "Assignment 1 Final"
+format: html
+editor: visual
+---
+
+## Assignment 1
+
+```{r}
+library(tidyverse)
+
+git_clone "https://github.com/iyakoven/PSYR6003-Assignment-1.git"
+##Importing CSV
+avengers <- read_csv("avengers.csv")
+##Here we can view the data using either a glimpse of it in the script, or the whole data set in a separate tab
+glimpse(avengers)
+view(avengers)
+summary(avengers)
+##This command assigns a new object that has the same data as avengers, but excludes observations with missing data
+clean_avengers <- na.omit(avengers)
+##This creates a new variable 
+clean_avengers_1 <- mutate(clean_avengers, CombatEffectiveness = agility + speed + strength + willpower)
+##This allows you to see a number of rows of your tibble
+head(clean_avengers_1)
+```
+
+## Question 3
+
+```{r}
+##This will give us a dataset that includes only those avengers without superpowers and who have died
+rip_avengers <- filter(clean_avengers_1, 
+                       superpower == "no",
+                       died == "yes")
+View(rip_avengers)
+##Installing package to be able to download as an SPSS file
+install.packages("haven")
+library(haven)
+getwd()
+##Download new dataset as .csv file
+write.csv(rip_avengers, "~/Desktop/PSYR 6003/Assignment 1 - Bronwyn Inness/rip_avengers.csv")
+
+##Download new dataset as SPSS file
+write_sav(rip_avengers, "~/Desktop/PSYR 6003/Assignment 1 - Bronwyn Inness/rip_avengers.sav")
+
+##Mean, SD, and range values (Overall)
+##CombatEffectivess
+summarise(rip_avengers, avg_CombatEffectiveness = mean(CombatEffectiveness))
+summarise(rip_avengers, sd_CombatEffectiveness = sd(CombatEffectiveness))
+summarise(rip_avengers, range_CombatEffectiveness = range(CombatEffectiveness))
+##kills
+summarise(rip_avengers, avg_kills = mean(kills))
+summarise(rip_avengers, sd_kills = sd(kills))
+summarise(rip_avengers, range_kills = range(kills))
+##injuries
+summarise(rip_avengers, avg_injuries = mean(injuries))
+summarise(rip_avengers, sd_injuries = sd(injuries))
+summarise(rip_avengers, range_injuries = range(injuries))
+##Mean, SD, and range values (based on Battlefield)
+##North Battlefield
+north_avengers <- filter(rip_avengers, north_south == "north")
+##CombatEffectivess
+summarise(north_avengers, avg_CombatEffectiveness = mean(CombatEffectiveness))
+summarise(north_avengers, sd_CombatEffectiveness = sd(CombatEffectiveness))
+summarise(north_avengers, range_CombatEffectiveness = range(CombatEffectiveness))
+##kills
+summarise(north_avengers, avg_kills = mean(kills))
+summarise(north_avengers, sd_kills = sd(kills))
+summarise(north_avengers, range_kills = range(kills))
+##injuries
+summarise(north_avengers, avg_injuries = mean(injuries))
+summarise(north_avengers, sd_injuries = sd(injuries))
+summarise(north_avengers, range_injuries = range(injuries))
+##South Battlefield
+south_avengers <- filter(rip_avengers, north_south == "south")
+##CombatEffectivess
+summarise(south_avengers, avg_CombatEffectiveness = mean(CombatEffectiveness))
+summarise(south_avengers, sd_CombatEffectiveness = sd(CombatEffectiveness))
+summarise(south_avengers, range_CombatEffectiveness = range(CombatEffectiveness))
+##kills
+summarise(south_avengers, avg_kills = mean(kills))
+summarise(south_avengers, sd_kills = sd(kills))
+summarise(south_avengers, range_kills = range(kills))
+##injuries
+summarise(south_avengers, avg_injuries = mean(injuries))
+summarise(south_avengers, sd_injuries = sd(injuries))
+summarise(south_avengers, range_injuries = range(injuries))
+
+```
+
+##Question 6
+
+##Question 8 Power analysis
+
+```{r}
+##Conducting a power analysis
+##t test power 
+##COPIED FROM OTHER LAB, REPLACE VALUES
+library(pwr)
+pwr.t.test(d = 0.41, sig.level = .05, power = .8, type = c("two.sample"), alternative = "two.sided")
+```
+
+##Question 9 Equivalence Power Test
+
+```{r}
+##Newer package code update, use this
+##Don't need to include sd FIX VALUES
+##maybe use old code so don't have to explain delta
+library(TOSTER)
+power_t_TOST(delta = 0, alpha = .05, power = .8, low_eqbound = -.2, high_eqbound = .2)
+```
+
+##Question 10 Independent t-test
+
+```{r}
+##Independent samples t test
+##FIX VALUES
+library(effectsize)
+t <- 4.25
+n1 <- 94
+n2 <- 94
+
+t_to_d(t, df_error = n1+n2-2, paired = FALSE)
+```
