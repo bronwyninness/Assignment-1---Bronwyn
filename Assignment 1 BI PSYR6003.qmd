@@ -9,7 +9,6 @@ editor: visual
 ```{r}
 library(tidyverse)
 
-git_clone "https://github.com/iyakoven/PSYR6003-Assignment-1.git"
 ##Importing CSV
 avengers <- read_csv("avengers.csv")
 ##Here we can view the data using either a glimpse of it in the script, or the whole data set in a separate tab
@@ -37,10 +36,10 @@ install.packages("haven")
 library(haven)
 getwd()
 ##Download new dataset as .csv file
-write.csv(rip_avengers, "~/Desktop/PSYR 6003/Assignment 1 - Bronwyn Inness/rip_avengers.csv")
+write.csv(rip_avengers, "~/Desktop/PSYR 6003/Assignment 1/Assignment 1 - BI PSYR6003/rip_avengers.csv")
 
 ##Download new dataset as SPSS file
-write_sav(rip_avengers, "~/Desktop/PSYR 6003/Assignment 1 - Bronwyn Inness/rip_avengers.sav")
+write_sav(rip_avengers, "~/Desktop/PSYR 6003/Assignment 1/Assignment 1 - BI PSYR6003/rip_avengers.sav")
 
 ##Mean, SD, and range values (Overall)
 ##CombatEffectivess
@@ -99,7 +98,7 @@ library(pwr)
 pwr.t.test(d = 0.41, sig.level = .05, power = .8, type = c("two.sample"), alternative = "two.sided")
 ```
 
-##Question 9 Equivalence Power Test
+##Question 9 Equivalence Power Test\
 
 ```{r}
 ##Newer package code update, use this
