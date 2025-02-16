@@ -4,7 +4,11 @@ format: html
 editor: visual
 ---
 
-## Assignment 1
+# Assignment 1
+
+## Question 1
+
+The repository for the assignment was cloned from GitHub. Below is the code showing how to import the CSV file titled "avengers.csv" and clean the data to omit any missing cases.
 
 ```{r}
 library(tidyverse)
@@ -15,15 +19,26 @@ avengers <- read_csv("avengers.csv")
 glimpse(avengers)
 view(avengers)
 summary(avengers)
-##This command assigns a new object that has the same data as avengers, but excludes observations with missing data
+##This command assigns a new object that has the same data as avengers.csv, but excludes observations with missing data
 clean_avengers <- na.omit(avengers)
-##This creates a new variable 
+```
+
+## Question 2
+
+The code below shows how to use the `mutate` function to create a new variable in the tibble, as well as show the first six rows of our tibble using the `head` function.
+
+```{r}
+##This creates a new variable named CombatEffectiveness
 clean_avengers_1 <- mutate(clean_avengers, CombatEffectiveness = agility + speed + strength + willpower)
-##This allows you to see a number of rows of your tibble
+##This allows you to see a few of the rows of our tibble
 head(clean_avengers_1)
 ```
 
 ## Question 3
+
+The following code creates a new data set that includes only those Avengers without superpowers and who have died. This data set is then turned into CSV and SPSS files and saved to the working directory.
+
+Using the `summarize` function, the mean, standard deviation, and range are found for the following variables: "combateffectiveness", "kills", and "injuries". These are found for the overall sample that we created and the North and South battlefields. Further information can be found in the results and discussion section of the Word document.
 
 ```{r}
 ##This will give us a dataset that includes only those avengers without superpowers and who have died
@@ -34,7 +49,7 @@ View(rip_avengers)
 ##Installing package to be able to download as an SPSS file
 install.packages("haven")
 library(haven)
-getwd()
+getwd() ##Double checking where my working directory is
 ##Download new dataset as .csv file
 write.csv(rip_avengers, "~/Desktop/PSYR 6003/Assignment 1/Assignment 1 - BI PSYR6003/rip_avengers.csv")
 
@@ -54,7 +69,9 @@ summarise(rip_avengers, range_kills = range(kills))
 summarise(rip_avengers, avg_injuries = mean(injuries))
 summarise(rip_avengers, sd_injuries = sd(injuries))
 summarise(rip_avengers, range_injuries = range(injuries))
+
 ##Mean, SD, and range values (based on Battlefield)
+
 ##North Battlefield
 north_avengers <- filter(rip_avengers, north_south == "north")
 ##CombatEffectivess
@@ -69,6 +86,7 @@ summarise(north_avengers, range_kills = range(kills))
 summarise(north_avengers, avg_injuries = mean(injuries))
 summarise(north_avengers, sd_injuries = sd(injuries))
 summarise(north_avengers, range_injuries = range(injuries))
+
 ##South Battlefield
 south_avengers <- filter(rip_avengers, north_south == "south")
 ##CombatEffectivess
@@ -86,37 +104,50 @@ summarise(south_avengers, range_injuries = range(injuries))
 
 ```
 
-##Question 6
+## Question 4 & 5
 
-##Question 8 Power analysis
+The answers to questions 4 and 5 can be found in the dicussion section of the Word document.
+
+## Question 6 & 7
+
+The answers to questions 6 and 7 can be found in the methods section of the Word document under 'Participants and Power Analysis' in 'Secondary Analyses'.
+
+## Question 8
+
+The following code performs a power analysis for the proposed study given the estimated effect size. Further information can be found in the methods section of the Word document under 'Participants and Power Analysis' in 'Secondary Analyses'.
 
 ```{r}
 ##Conducting a power analysis
 ##t test power 
-##COPIED FROM OTHER LAB, REPLACE VALUES
 library(pwr)
-pwr.t.test(d = 0.41, sig.level = .05, power = .8, type = c("two.sample"), alternative = "two.sided")
+pwr.t.test(d = 0.35, sig.level = .05, power = .8, type = c("two.sample"), alternative = "two.sided")
 ```
 
-##Question 9 Equivalence Power Test\
+## Question 9
+
+The following code performs an equivalence test for t tests, using the estimated Cohen's *d* effect size. Further information can be found in the methods section of the Word document under 'Participants and Power Analysis' in 'Secondary Analyses'.
 
 ```{r}
-##Newer package code update, use this
-##Don't need to include sd FIX VALUES
-##maybe use old code so don't have to explain delta
 library(TOSTER)
-power_t_TOST(delta = 0, alpha = .05, power = .8, low_eqbound = -.2, high_eqbound = .2)
+power_t_TOST(delta = 0, alpha = .05, power = .8, low_eqbound = -.35, high_eqbound = .35, type = "two.sample")
 ```
 
-##Question 10 Independent t-test
+## Question 10
+
+The following code finds the effect size for the independent t-test for the overall sample, given that *t* = 4.25. Sample size for Avengers with and without superpowers was found using the `filter` function, as per the instructions for the question! Further information can be found in the results section of the Word document under 'Secondary Analyses'.
 
 ```{r}
 ##Independent samples t test
-##FIX VALUES
+no_superpower <- filter(clean_avengers_1, superpower == "no")
+yes_superpower <- filter(clean_avengers_1, superpower == "yes")
+nrow(no_superpower)
+nrow(yes_superpower)
 library(effectsize)
 t <- 4.25
-n1 <- 94
-n2 <- 94
+n1 <- 780
+n2 <- 32
 
 t_to_d(t, df_error = n1+n2-2, paired = FALSE)
 ```
+
+Thank you!
